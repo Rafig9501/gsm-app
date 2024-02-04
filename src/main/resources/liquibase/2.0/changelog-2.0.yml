@@ -1,0 +1,6 @@
+databaseChangeLog:
+  - changeSet:
+      id: 2
+      author: Rafig Mammadzada
+      sqlFile:
+        path: liquibase/2.0/changelog-2.0.sql
