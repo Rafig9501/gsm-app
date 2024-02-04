@@ -1,0 +1,38 @@
+server:
+  servlet:
+    context-path: /gsm-ms
+  port: 8080
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui
+    operations-sorter: method
+spring:
+  application:
+    name: gsm-ms
+  liquibase:
+    enabled: true
+    change-log: classpath:/liquibase/changelog-master.yml
+    drop-first: false
+    database-change-log-table: GSM_DB_CHANGELOG
+    database-change-log-lock-table: GSM_DB_LOCK
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: ${POSTGRES_DB_URL:jdbc:postgresql://localhost:5432/gsm}
+    username: ${POSTGRES_DB_USERNAME:myuser}
+    password: ${POSTGRES_DB_PASSWORD:mypassword}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: ${SHOW_SQL:true}
+  main:
+    allow-circular-references: true
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+security:
+  jwt_token_issuer: ${ISSUER:GSM-APP}
+  jwt_access_token_expiration: ${ACCESS_TOKEN_EXPIRATION_MS:7200000}
+  jwt_refresh_token_expiration: ${REFRESH_TOKEN_EXPIRATION_MS:86400000}
+  jwt_secret: ${JWT_TOKEN_SECRET:eyJhbGciOiJIUzUxMiJ9eyJyZWZyZXNoRXhwaXJhdGlvbkRhdGUiOjE3MDY5NjAwNjc5MzEsImlzc3VlZEF0IjoxNzA2ODczNjY3OTMxLCJ1c2VySWQiOiI3ZjAwMDAwMS04ZDY5LTE2YmMtODE4ZC02OTY5ZmEwYjAwMDEiLCJleHBpcmF0aW9uRGF0ZSI6MTcwNjk2MDA2NzkzMSwic3ViIjoic3RyaW5nIiwiaXNzIjoiR1NNLUFQUCJ99d0Fpk5N9KNq1P-96bwSFvzREniKlYxhBAHDTfa41KRELWTXU8jx3blR7zFCZ7QQ6ZGNb4CWXztad8zWlM8ZSg}
