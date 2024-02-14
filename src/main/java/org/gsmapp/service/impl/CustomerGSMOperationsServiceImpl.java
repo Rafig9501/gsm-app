@@ -9,6 +9,7 @@ import org.gsmapp.entity.TransactionType;
 import org.gsmapp.entity.UserEntity;
 import org.gsmapp.exception.AuthorizationException;
 import org.gsmapp.exception.EntityNotFoundException;
+import org.gsmapp.exception.WrongRefundOperationException;
 import org.gsmapp.mapper.CustomerMapper;
 import org.gsmapp.mapper.TransactionMapper;
 import org.gsmapp.repository.CustomerRepository;
@@ -80,6 +81,9 @@ public class CustomerGSMOperationsServiceImpl implements CustomerGSMOperationsSe
                 return customerEntity;
             }
             case PURCHASE -> {
+                if (customerEntity.getBalance().compareTo(amount) < 0) {
+                    throw new WrongRefundOperationException(NOT_ENOUGH_BALANCE);
+                }
                 customerEntity.setBalance(balance.subtract(amount));
                 saveUpdatedTransactions(customerDto, customerEntity, type);
                 return customerEntity;
@@ -87,8 +91,10 @@ public class CustomerGSMOperationsServiceImpl implements CustomerGSMOperationsSe
             case REFUND -> {
                 TransactionEntity transactionEntity = transactionRepository
                         .findByCustomerIdAndTransactionType(customerEntity.getId(), PURCHASE.toString())
-                        .orElseThrow(() -> new EntityNotFoundException(TRANSACTION_NOT_FOUND));
-                customerEntity.setBalance(customerEntity.getBalance().subtract(customerDto.getTransactionDto().getAmount()));
+                        .filter(t -> t.getAmount().compareTo(customerDto.getTransactionDto().getAmount()) >= 0
+                                && !transactionRepository.existsByOriginalTransaction_Id(t.getId()))
+                        .orElseThrow(() -> new WrongRefundOperationException(TRANSACTION_AMOUNT_LESS));
+                customerEntity.setBalance(customerEntity.getBalance().add(customerDto.getTransactionDto().getAmount()));
                 transactionRepository.save(TransactionEntity.builder()
                         .originalTransaction(transactionEntity)
                         .customer(customerEntity)

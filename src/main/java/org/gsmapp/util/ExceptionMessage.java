@@ -8,7 +8,8 @@ public final class ExceptionMessage {
     public static final String USER_ALREADY_EXISTS_EXCEPTION = "User already exists in database";
     public static final String NOT_FOUND_EXCEPTION = "No records in database";
     public static final String CUSTOMER_NOT_FOUND = "No customer record found in database";
-    public static final String TRANSACTION_NOT_FOUND = "Customer has no transaction record in database";
+    public static final String NOT_ENOUGH_BALANCE = "Customer has no enough balance for purchase";
+    public static final String TRANSACTION_AMOUNT_LESS = "Purchase transaction amount less than refund amount or transaction already been refunded";
     public static final String INVALID_TRANSACTION_TYPE = "Invalid transaction type: ";
     public static final String USER_NOT_FOUND = "No user record found in database";
     public static final String AUTHENTICATION_EXCEPTION = "Authentication failed, wrong username or password";

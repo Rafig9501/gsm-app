@@ -75,7 +75,11 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         } else if (ex instanceof EntityNotFoundException) {
             return getResponseEntity(ex, HttpStatus.BAD_REQUEST, request, ex.getMessage(),
                     ExceptionMessage.NOT_FOUND_EXCEPTION);
-        } else if (ex instanceof UserAlreadyExistsException) {
+        } else if (ex instanceof WrongRefundOperationException) {
+            return getResponseEntity(ex, HttpStatus.BAD_REQUEST, request, ex.getMessage(),
+                    ExceptionMessage.BAD_REQUEST_EXCEPTION);
+        }
+        else if (ex instanceof UserAlreadyExistsException) {
             return getResponseEntity(ex, HttpStatus.NOT_ACCEPTABLE, request, ex.getMessage(),
                     ExceptionMessage.USER_ALREADY_EXISTS_EXCEPTION);
         } else if (ex instanceof AuthenticationException) {

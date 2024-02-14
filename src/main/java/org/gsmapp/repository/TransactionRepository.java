@@ -20,4 +20,6 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
             @Param("customerId") UUID customerId,
             @Param("transactionType") String transactionType
     );
+
+    boolean existsByOriginalTransaction_Id(UUID uuid);
 }
